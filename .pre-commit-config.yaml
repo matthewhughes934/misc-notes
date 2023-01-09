@@ -1,0 +1,6 @@
+repos:
+-   repo: https://github.com/matthewhughes934/pre-commit-format-markdown
+    rev: v0.1.0
+    hooks:
+    -   id: format-markdown
+        args: ["--width", "80", "--extension", "table"]

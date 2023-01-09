@@ -23,14 +23,14 @@ dockerfile but don't include the shell invocation above.
 
 Bad:
 
-```dockerfile
+``` dockerfile
 RUN python -m venv /path/to/venv; \
     /path/to/venv/pip install setuptools wheel
 ```
 
 Good:
 
-```dockerfile
+``` dockerfile
 RUN python -m venv /path/to/venv && \
     /path/to/venv/pip install setuptools wheel
 ```
@@ -39,19 +39,19 @@ RUN python -m venv /path/to/venv && \
 
 Many programs that you may want to run when building a docker image include
 fancy (colourful, emojis, etc.) output that can be nice to view from your
-terminal emulator when running things locally, but can be painful to be debug
-in CI (such as `pip`). I find it most helpful to make these
-commands print information in as basic a format as possible.
+terminal emulator when running things locally, but can be painful to be debug in
+CI (such as `pip`). I find it most helpful to make these commands print
+information in as basic a format as possible.
 
 Bad:
 
-```dockerfile
+``` dockerfile
 RUN pip install setuptools wheel
 ```
 
 Good:
 
-```dockerfile
+``` dockerfile
 RUN pip install --progress-bar off setuptools wheel
 ```
 
@@ -60,22 +60,22 @@ RUN pip install --progress-bar off setuptools wheel
 Many programs that install software will use a cache to speed up future
 installs. This is not too helpful when building docker images since:
 
-1. The caches cannot be reused between runs
-2. The caches add size to your final docker image
+1.  The caches cannot be reused between runs
+2.  The caches add size to your final docker image
 
 Many of these commands come with options to disable caching, which should be
 used.
 
 Bad:
 
-```dockerfile
+``` dockerfile
 RUN pip install poetry && \
     poetry install
 ```
 
 Good:
 
-```dockerfile
+``` dockerfile
 # --no-cache option for poetry added in 1.2.0
 RUN pip install --no-cache poetry>=1.2.0 && \
     poetry install --no-cache

@@ -8,10 +8,8 @@ $ go test -gcflags='-N -l' -c path/to/pkg
 $ gdb ./pkg.test
 ```
 
-```
-# break on a line
-(gdb) break pkg/some_file.go:12
-# or a functions
-(gdb) break path/to/pkg/file.func
-(gdb) info functions path/*
-```
+    # break on a line
+    (gdb) break pkg/some_file.go:12
+    # or a functions
+    (gdb) break path/to/pkg/file.func
+    (gdb) info functions path/*

@@ -15,8 +15,7 @@ is blow away each time though.
 Importantly, the files stored in these mounts don't contribute to overall image
 size. For example, this directory contains two dockerfiles that both just build
 5MB files however one of them stores this file in the mount cache and the other
-just stores it in the
-image:
+just stores it in the image:
 
 ``` console
 $ DOCKER_BUILDKIT=1 docker build --tag with-cache --file with_cache_mount.dockerfile .

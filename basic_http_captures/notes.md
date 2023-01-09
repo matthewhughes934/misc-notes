@@ -305,15 +305,14 @@ Setting up again:
 $ sudo tcpdump -i wlp3s0 -s 65536 -w https_logged_example.cap
 ```
 
-```console
+``` console
 $ SSLKEYLOGFILE=sslkey.log curl --http1.1 -sv -H 'connection: close' -o /dev/null https://www.example.com
-``` 
+```
 
 Then if we set the `tls.keylog_file` option in `tshark` we can view the
 decrypted flow:
 
-
-```console
+``` console
 $ tshark -o tls.keylog_file:sslkey.log -r https_logged_example.cap 
     1   0.000000 192.168.0.21 → 194.168.4.100 DNS 86 Standard query 0x1b1d A www.example.com OPT
     2   0.000040 192.168.0.21 → 194.168.4.100 DNS 86 Standard query 0x7ef6 AAAA www.example.com OPT
