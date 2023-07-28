@@ -83,12 +83,12 @@ clone.
 A note on the args, `--filter=blob:none` means we skip fetching any file
 contents until we need them:
 
-> \--filter=<filter-spec>
+> \--filter=\<filter-spec\>
 > 
 > Use the partial clone feature and request that the server sends a subset of
 > reachable objects according to a given object filter. When using --filter, the
-> supplied <filter-spec> is used for the partial clone filter. For example,
+> supplied \<filter-spec\> is used for the partial clone filter. For example,
 > --filter=blob:none will filter out all blobs (file contents) until needed by
-> Git. Also, --filter=blob:limit=<size> will filter out all blobs of size at
-> least <size>. For more details on filter specifications, see the --filter
+> Git. Also, --filter=blob:limit=\<size\> will filter out all blobs of size at
+> least \<size\>. For more details on filter specifications, see the --filter
 > option in git-rev-list(1).
