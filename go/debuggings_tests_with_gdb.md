@@ -4,7 +4,7 @@ Compile the package without optimisations of inlining (see `go doc cmd/compile`
 for flag meanings):
 
 ``` shell
-$ go test -gcflags='-N -l' -c path/to/pkg
+$ go test -gcflags='all=-N -l' -c path/to/pkg
 $ gdb ./pkg.test
 ```
 
