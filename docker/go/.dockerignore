@@ -1,0 +1,7 @@
+# ignore everything
+*
+
+# explicitly include bits we need
+!go.sum
+!go.mod
+!*.go
