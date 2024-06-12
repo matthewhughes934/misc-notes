@@ -1,13 +1,28 @@
 # Go Docker project
 
 A simple Go project to demonstrate some principles when building Go projects
-with Docker. It makes use of a SSH key mounted as a secret at build time to
-fetch dependencies over Git rather than e.g. injecting a Github user-name and
-token into the build image which will result in those secrets being exposed in
-the image's history.
+with Docker. There are two Dockerfiles each demonstrating how to inject secrets
+via secret mounts and avoid including them in the build history
 
-To build you need to provide an SSH key:
+## With SSH key
+
+See `ssh.dockerfile`, to build you need to provide an SSH key:
 
 ``` console
-$ docker build --secret id=ssh-key,src=/path/to/ssh-key .
+$ docker build \
+    --file ssh.dockerfile \
+    --secret id=ssh-key,src=/path/to/ssh-key \
+    .
+```
+
+## With GitHub token
+
+See `token.dockerfile`, to build you need a GitHub token with permissions to
+clone any repos:
+
+``` console
+$ GITHUB_TOKEN=<token-goes-here> docker build \
+    --file token.dockerfile \
+    --secret id=github_token,env=GITHUB_TOKEN \
+    .
 ```
