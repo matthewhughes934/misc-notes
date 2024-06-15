@@ -1,5 +1,9 @@
 # Docker build secrets
 
+Some notes on extracting secrets used in Docker build without secret mounts etc.
+even for the case when the secret was used in the build stage of a multi-stage
+build.
+
 ## With `buildkit`
 
 ``` console
