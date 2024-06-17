@@ -59,23 +59,16 @@ $ DOCKER_BUILDKIT=1 docker build \
 #13 DONE 0.7s
 ```
 
-The secret will then be present in some parts of the build environment, e.g. in
-the [attestations](https://docs.docker.com/build/attestations/slsa-provenance/)
-that describe the build config:
+The secret will then be present in some parts of the build environment, e.g. if
+you're using the [`overlayfs` storage
+driver](https://docs.docker.com/storage/storagedriver/overlayfs-driver/) then
+the secret can be read from there:
 
 ``` console
-grep \
-    --recursive my_token \
-    -- "$(docker info --format '{{ .DockerRootDir }}')/buildkit/content/blobs" 2>/dev/null
-/var/lib/docker/buildkit/content/blobs/sha256/286293ddd2b19512c92e300530efb48d8de1130eef46fae055bcbaa7dec38827:  "Name": "[build 2/5] RUN     apk add --quiet --no-cache git     \u0026\u0026 git config --global url.\"https://my_token@github.com/\".insteadOf \"https://github.com/\"",
-/var/lib/docker/buildkit/content/blobs/sha256/286293ddd2b19512c92e300530efb48d8de1130eef46fae055bcbaa7dec38827:        "Value": "/usr/lib/docker/cli-plugins/docker-buildx buildx build --build-arg GITHUB_TOKEN=my_token --progress plain ."
-/var/lib/docker/buildkit/content/blobs/sha256/ee991a2778861a434a8dceb7545ceab175d36b0d85a3f081b5b7aa6414ce17e7:        "build-arg:GITHUB_TOKEN": "my_token"
-/var/lib/docker/buildkit/content/blobs/sha256/ee991a2778861a434a8dceb7545ceab175d36b0d85a3f081b5b7aa6414ce17e7:                  "GITHUB_TOKEN=my_token"
-/var/lib/docker/buildkit/content/blobs/sha256/ee991a2778861a434a8dceb7545ceab175d36b0d85a3f081b5b7aa6414ce17e7:                  "GITHUB_TOKEN=my_token"
+$ find "$(docker info --format '{{ .DockerRootDir }}')/overlay2/" -type f -name .gitconfig -exec cat {} \;
+[url "https://my_token@github.com/"]
+	insteadOf = https://github.com/
 ```
-
-Though I'm not sure how to inspect the cache used by `buildkit` to extract the
-actual raw `/root/.gitconfig` contents.
 
 ## Without `buildkit`
 
