@@ -21,3 +21,27 @@ and is the smallest of:
   - `getconf ARG_MAX`\[3\], see
     [`sysconf(3)`](https://man.archlinux.org/man/sysconf.3.en) and
     [`getconf(1P)`](https://man.archlinux.org/man/getconf.1p.en)
+
+## Signals and `wait`
+
+An interesting POSIX behaviour I noticed [from the
+docs](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_11):
+
+> When the shell is waiting, by means of the wait utility, for asynchronous
+> commands to complete, the reception of a signal for which a trap has been set
+> shall cause the wait utility to return immediately with an exit status \>128,
+> immediately after which the trap associated with that signal shall be taken.
+
+So the `trap` on the first line below means sending `SIGINT` to the program will
+cause `sleep` to exit:
+
+``` sh
+trap : SIGINT
+
+echo "I am $$"
+
+echo "sleeping for a long time"
+sleep 1000 &
+wait
+echo "waking"
+```
