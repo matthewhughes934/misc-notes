@@ -80,3 +80,28 @@ Good:
 RUN pip install --no-cache poetry>=1.2.0 && \
     poetry install --no-cache
 ```
+
+## `.dockerignore`
+
+It's very easy to add additional files to Docker without realising it. This is
+because, unlike ignoring things in `git` where a missing file will show in the
+output of `git diff`, the consequences of including a file vary from
+
+  - Best case, does nothing but maybe increases the size of your image
+  - Worst case, causes some critical information leak, like [this PyPI
+    incident](https://blog.pypi.org/posts/2024-07-08-incident-report-leaked-admin-personal-access-token/)
+    For this reason, I recommend a *restrictive* `.dockerignore`, that is, it
+    ignores everything by default, files that *should* be included are added as
+    exceptions, e.g. for a simple Go app:
+
+<!-- end list -->
+
+``` ignore
+# ignore everything
+*
+
+# explicitly include bits we need
+!go.sum
+!go.mod
+!*.go
+```
