@@ -48,5 +48,10 @@ RUN \
 # which can make debugging a nuissance
 FROM alpine:3.18
 
-COPY --from=build /build/hello /bin/hello
+# create a non-root user to run our application
+RUN \
+    addgroup --system app && \
+    adduser --ingroup app --disabled-password --no-create-home --system app
+
+COPY --chown=app:app --from=build /build/hello /bin/hello
 ENTRYPOINT [ "/bin/hello" ]
