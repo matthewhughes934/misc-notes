@@ -1,12 +1,23 @@
 # Linux
 
-Misc notes from working on Linux machines
+## `execve` limits
 
-# Argument list too long
+I.e. `Argument list too long` error. Most frequently encountered in GitHub
+actions when trying to pass large arguments down to other actions. [The
+docs](https://man.archlinux.org/man/execve.2.en#E2BIG) say:
 
-What is the actual limit here? From my understanding, it's the smallest of:
+> The total number of bytes in the environment (envp) and argument list (argv)
+> is too large, an argument or environment string is too long, or the full
+> pathname of the executable is too long. The terminating null byte is counted
+> as part of the string length.
 
-  - `echo $(( $(getconf PAGESIZE) * 32 ))` (i.e. `MAX_ARG_STRLEN` in the kernel)
-    [ref](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/binfmts.h?id=861c0981648f5b64c86fd028ee622096eb7af05a),
-    and
-  - `getconf ARG_MAX` [ref](https://man.archlinux.org/man/sysconf.3.en#ARG_MAX)
+Of note, it includes *environment variables* as well as the argument list.
+
+This limit are defined [in
+`include/uapi/linux/binfmts.h`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/binfmts.h?id=861c0981648f5b64c86fd028ee622096eb7af05a)
+and is the smallest of:
+
+  - `echo $(( $(getconf PAGESIZE) * 32 ))`, i.e. `MAX_ARG_STRLEN` in that link
+  - `getconf ARG_MAX`\[3\], see
+    [`sysconf(3)`](https://man.archlinux.org/man/sysconf.3.en) and
+    [`getconf(1P)`](https://man.archlinux.org/man/getconf.1p.en)
