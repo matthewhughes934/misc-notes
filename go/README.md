@@ -25,3 +25,10 @@ os.Unsetenv(var)
 
 [credit goes to this
 comment](https://github.com/golang/go/issues/52817#issuecomment-1131339120)
+
+## Test run location
+
+From [the docs](https://pkg.go.dev/cmd/go#hdr-Testing_flags):
+
+> When 'go test' runs a test binary, it does so from within the corresponding
+> package's source code directory
