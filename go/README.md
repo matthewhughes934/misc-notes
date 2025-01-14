@@ -32,3 +32,45 @@ From [the docs](https://pkg.go.dev/cmd/go#hdr-Testing_flags):
 
 > When 'go test' runs a test binary, it does so from within the corresponding
 > package's source code directory
+
+## CLI structure
+
+Because `main` in Go:
+
+  - Can only set the exit code via a call to `os.Exit`, and
+  - Does not take any arguments
+
+And:
+
+  - I want to test return codes (and can't, and don't want to, reassign
+    `os.Exit`)
+  - I want to test via passing arguments (and don't want to monkey patch
+    `os.Args`)
+
+I like to structure my CLI applications like:
+
+``` go
+package main
+
+import (
+    "context"
+    "fmt"
+    "io"
+    "os"
+)
+
+func main() {
+    exitCode, err := runApp(context.Background(), os.Stdin, os.Stdout, os.Args)
+    if err != nil {
+        fmt.Fprintln(os.Stderr, err)
+    }
+
+    os.Exit(exitCode)
+}
+
+// all the work is done here. Can be tested via injecting args and/or input,
+// and the output and returned exit code an error can all be asserted on
+func runApp(ctx context.Context, in io.Reader, out io.Writer, args []string) (int, error) {
+    return 0, nil
+}
+```
