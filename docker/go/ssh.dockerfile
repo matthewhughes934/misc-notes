@@ -54,4 +54,5 @@ RUN \
     adduser --ingroup app --disabled-password --no-create-home --system app
 
 COPY --chown=app:app --from=build /build/hello /bin/hello
+USER user
 ENTRYPOINT [ "/bin/hello" ]

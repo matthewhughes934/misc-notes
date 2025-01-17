@@ -50,4 +50,5 @@ RUN \
     adduser --ingroup user --disabled-password --no-create-home --system user
 
 COPY --chown=user:user --from=build /build/hello /bin/hello
+USER user
 ENTRYPOINT [ "/bin/hello" ]
