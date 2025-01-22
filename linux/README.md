@@ -18,7 +18,7 @@ This limit are defined [in
 and is the smallest of:
 
   - `echo $(( $(getconf PAGESIZE) * 32 ))`, i.e. `MAX_ARG_STRLEN` in that link
-  - `getconf ARG_MAX`\[3\], see
+  - `getconf ARG_MAX`, see
     [`sysconf(3)`](https://man.archlinux.org/man/sysconf.3.en) and
     [`getconf(1P)`](https://man.archlinux.org/man/getconf.1p.en)
 
